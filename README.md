@@ -3,26 +3,33 @@ Two scripts here:
 1. auto pm members on quest finished - auto accept quest invitations
 2. auto-accept-quests
 
-1. auto pm members on quest finished - auto accept quest invitations
-If a party desires automated PM when a quest is finished, one member can install a Habitica webhook, set up a google apps script and 
-might shall set up a google sheet. 
-It is supposed that the user installing this script also wants to auto-accept-quests, so the Webhook on Habitica has to be 
-set up using the following parameters: 
-  webhook id (optional)  [no input here]
-  url: https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec  [get from google scripts]
-  webhook label   [no input necessary]
-  enable
-  questActivity
-  {"questStarted":false,"questFinished":true,"questInvited":true}  
+@1. auto pm members on quest finished - auto accept quest invitations  
+
+If a party desires automated PM when a quest is finished, one member can install a Habitica webhook,  
+set up the google apps script and shall set up a google sheet.  
   
-2. auto-accept-quests
-If you just want to auto-accept quest invitations without pmailing your party members, please use this script and set up the Habitica
-Webhook like this: 
-  webhook id (optional) 
-  url: https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec  
-  webhook label 
-  enable
-  questActivity
+It is supposed that the user installing this script also wants to auto-accept-quests,  
+so the Webhook on Habitica has to be set up using the following parameters:   
+  
+  
+  webhook id (optional)  // no input here  
+  url: https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec  // get this from deploying the script  
+  webhook label  //no input necessary  
+  enable  
+  questActivity  
+  {"questStarted":false,"questFinished":true,"questInvited":true}   
+    
+      
+      
+@2. auto-accept-quests
+If you just want to auto-accept quest invitations without pmailing your party members, please use this script and set  
+up the Habitica Webhook like this:  
+  
+  webhook id (optional)  
+  url: https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec    
+  webhook label   
+  enable  
+  questActivity  
   {"questStarted":false,"questFinished":false,"questInvited":true}
 
 
