@@ -70,7 +70,7 @@ catch (err) {
       }
     }
     var params = paramsTemplate; 
-    var url = "https://habitica.com/api/v3/groups/" + partyId + "/quests/accept"; 
+    var url = "https://habitica.com/api/v3/groups/party/quests/accept"; 
     UrlFetchApp.fetch(url, params);
   }
  
