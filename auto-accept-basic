@@ -1,4 +1,4 @@
-// This script is meant to notice, when a new invitation for a quest is online and instantly accept the quest invitation. 
+// This script is meant to notice, when a new invitation for a quest is online and instantly accepts the quest invitation. 
 //
 // Requirements for this script to work are:  
 // (1) to set up a webhook-server: 
@@ -11,8 +11,6 @@
 //     - ! execute the script as "yourself"
 //     - ! grant acces to everyone, even anonymous. 
 //           (please evaluate for youself about security issues.) 
-//           (You might want to use a bot-character for this)
-//           (Auto accept quest invitation cannot work if using a bot character)
 //     - click "accept". In the following screen: copy the url-snippet (ending with "exec"). This is your webook-url! You need this for step 2!
 //     - done
 //     - each time you edit the script, it has to be saved as a new version and the new version has to be deployes as a web-app again. 
@@ -28,7 +26,6 @@
 //         - done
 //       
 
-// https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec
 
 function doPost(e) {
   var now = new Date();
