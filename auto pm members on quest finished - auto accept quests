@@ -37,7 +37,6 @@ function doPost(e) {
   var now = new Date();
   var habId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"; // your Habitica UserId
   var habToken = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"; // your Habitica API-Token (don't share, = password!)
-  var partyId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"; // your PartyId 
   var message = "The quest is over. You might start a new quest";
   var toUserIds = ["xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",   
                     "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", 
@@ -105,7 +104,7 @@ catch (err) {
       }
     }
     var params = paramsTemplate; 
-    var url = "https://habitica.com/api/v3/groups/" + partyId + "/quests/accept"; 
+    var url = "https://habitica.com/api/v3/groups/party/quests/accept"; 
     UrlFetchApp.fetch(url, params);
   }
  
