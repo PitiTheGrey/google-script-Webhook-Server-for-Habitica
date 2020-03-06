@@ -31,7 +31,6 @@ function doPost(e) {
   var now = new Date();
   var habId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"; // your Habitica UserId
   var habToken = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"; // your Habitica API-Token (don't share, = password!)
-  var partyId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"; // your PartyId 
   
   
 try {   
