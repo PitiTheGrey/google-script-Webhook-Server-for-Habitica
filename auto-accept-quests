@@ -61,7 +61,6 @@ catch (err) {
   if (type == 'questInvited') {
     sheet.getRange(2, 2).setValue("quest invited"); 
     var paramsTemplate = {
-      "contentType": "application/json", 
       "method": "post", 
       "headers" : {
         "x-api-client" : habId + "-Webhook Script questInvited",
