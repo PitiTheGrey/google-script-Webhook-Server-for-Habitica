@@ -46,7 +46,6 @@ catch (err) {
  
   if (type == 'questInvited') {
     var paramsTemplate = {
-      "contentType": "application/json", 
       "method": "post", 
       "headers" : {
         "x-api-client" : habId + "-Webhook Script questInvited",
