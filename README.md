@@ -1,7 +1,7 @@
 Two scripts here: 
 
 1. auto pm members on quest finished - auto accept quest invitations
-2. auto-accept-quests
+2. auto-accept-quests (with spreadsheet) and auto-accept-basic (without spreadsheet)
 
 @1. auto pm members on quest finished - auto accept quest invitations  
 
