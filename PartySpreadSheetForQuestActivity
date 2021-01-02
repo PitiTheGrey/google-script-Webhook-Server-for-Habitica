@@ -1,0 +1,101 @@
+function doGet(e) {
+ //return message if called via url (browswer)
+ return ContentService.createTextOutput(JSON.stringify({"from":"googleAppsScript - doGet"}));
+}
+
+function doPost(e) {
+
+  var now = new Date();
+  var habId = "00000000-0000-0000-0000-000000000000";
+  var habToken = "00000000-0000-0000-0000-000000000000";
+  var message = "The quest is over. You might start a new quest";
+  //put habIds of users who want a pm on "questFinished" in doublequotes, coma-separated, all in []
+    var toUserIds = ["00000000-0000-0000-0000-000000000000",
+                    "00000000-0000-0000-0000-000000000000",
+                    "00000000-0000-0000-0000-000000000000"];
+
+  var ss= SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/00000_000000000000000__000000000000000000000/edit?usp=sharing");
+  //insert a sheet name into you google sheet and call it Log
+  var sheet = ss.getSheetByName("Log");
+  sheet.insertRows(2, 1); //shift all rows down by one from row 3
+  sheet.getRange(2, 1).setValue(now);
+  // sheet.getRange(2, 6).setValue(JSON.stringify(e)); // display all information from webhook response
+
+try {
+  var dataContents = JSON.parse(e.postData.contents); // [object]; get rid of backslashes in e.postData.contents-object  // e.postData.contents has to be parsed!!!
+  var type = dataContents.type;
+  var user = dataContents.user._id;
+
+  sheet.getRange(2, 3).setValue(type);
+
+  if (type == "questFinished") {
+    var quest = dataContents.quest.key;
+    sheet.getRange(2, 2).setValue("quest finished");
+    sheet.getRange(2, 4).setValue(quest);
+    for (var i = 0; i < toUserIds.length; i++) {
+      var data = {"message" : message, "toUserId" : toUserIds[i]};
+      var paramsTemplate = {
+        "contentType": "application/json",
+        "payload" : JSON.stringify(data),
+        "method" : "post", 
+        "headers" : {
+          "x-api-client" : habId + "-Webhook Script questFinished",
+          "x-api-user" : habId, 
+          "x-api-key" : habToken
+        }
+      }
+      var params = paramsTemplate;
+      UrlFetchApp.fetch("https://habitica.com/api/v3/members/send-private-message", params);
+      Utilities.sleep(1000);
+     try {
+        sheet.getRange(2, 6).setValue(JSON.stringify(dataContents)); 
+      }  
+      catch (err) {sheet.getRange(2, 9).setValue("error: " + JSON.stringify(err))};
+  } // end for i
+  } // end if questFinished
+  
+  if (type == 'questStarted') {
+      sheet.getRange(2,2).setValue("quest started");
+      try {
+          var questOwner = dataContents.user._id;
+          sheet.getRange(2, 5).setValue(questOwner);
+          var quest = dataContents.quest.key;
+          sheet.getRange(2, 2).setValue("quest started");
+          sheet.getRange(2, 4).setValue(quest);
+      }
+  
+  catch (err) {sheet.getRange(2, 5).setValue("error: " + JSON.stringify(err))};
+  }
+   if (type == 'questInvited') {
+    sheet.getRange(2, 2).setValue("quest invited"); 
+    var paramsTemplate = {
+      "method": "post", 
+      "headers" : {
+        "x-api-client" : "9226cae6-d852-45da-a51b-ec2c9cb759e6 -Webhook Script questInvited",
+        "x-api-user" : "9226cae6-d852-45da-a51b-ec2c9cb759e6",  
+        "x-api-key" : "899b4ae5-a688-4ec9-83cf-5f2d89e8f3c6"
+      }
+    }
+         try {
+        sheet.getRange(2, 6).setValue(JSON.stringify(dataContents)); 
+      }  
+      catch (err) {sheet.getRange(2, 5).setValue("error: " + JSON.stringify(err))};
+
+    var params = paramsTemplate; 
+    var url = "https://habitica.com/api/v3/groups/party/quests/accept"; 
+    UrlFetchApp.fetch(url, params);
+   } // end if questInvited
+   
+ 
+} // end try 
+ 
+  
+  
+catch (err) {
+  // ...the execution jumps here
+    sheet.getRange(2, 7).setValue("error: " + JSON.stringify(err));
+  }
+  
+  
+  return HtmlService.createHtmlOutput("Hey! Webhook request received: " + JSON.stringify(e));
+}
