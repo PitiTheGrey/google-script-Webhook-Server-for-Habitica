@@ -120,3 +120,35 @@ catch (err) {
 
     return HtmlService.createHtmlOutput("Hey! Webhook request received: " + JSON.stringify(e));
 }
+
+function flattenObject(graph) {
+    let result = {},
+        item,
+        key;
+
+    function recurr(graph, path) {
+        if (Array.isArray(graph)) {
+            graph.forEach(function (itm, idx) {
+                key = path + '[' + idx + ']';
+                if (itm && typeof itm === 'object') {
+                    recurr(itm, key);
+                } else {
+                    result[key] = itm;
+                }
+            });
+        } else {
+            Reflect.ownKeys(graph).forEach(function (p) {
+                key = path + '.' + p;
+                item = graph[p];
+                if (item && typeof item === 'object') {
+                    recurr(item, key);
+                } else {
+                    result[key] = item;
+                }
+            });
+        }
+    }
+    recurr(graph, '');
+
+    return result;
+}
