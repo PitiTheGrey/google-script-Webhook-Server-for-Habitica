@@ -1,0 +1,39 @@
+function doPost(e) {
+
+  var now = new Date();
+  var habId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"; 
+  var habToken = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+  var ss= SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/xxxxxxxxxxxxxx__xxxxxxxxxxxxxxxxxxx/edit?usp=sharing");
+  var sheet = ss.getSheetByName("Log");
+  var dataContents = {};
+  var type = "";
+  var questOwner = "";
+  
+  sheet.insertRows(2, 1); //shift all rows down by one from row 3
+  sheet.getRange(2, 1).setValue(now);
+ 
+  try {
+    dataContents = JSON.parse(e.postData.contents); // [object]; get rid of backslashes in e.postData.contents-object  // e.postData.contents has to be parsed!!!
+    type = dataContents.type;
+ 
+    sheet.getRange(2, 2).setValue(type);
+    try {
+      sheet.getRange(2, 6).setValue(JSON.stringify(dataContents));
+    }
+    catch (err) {sheet.getRange(2, 10).setValue("error Line 23: " + JSON.stringify(err))};
+
+    try {
+        if (dataContents.quest.questOwner) {questOwner = dataContents.quest.questOwner;} else {questOwner = "-";}
+        sheet.getRange(2, 4).setValue(questOwner);
+        sheet.getRange(2, 3).setValue(dataContents.quest.key);
+    }
+    catch (err) {
+        sheet.getRange(2, 9).setValue("error: " + JSON.stringify(err));
+    };
+  } // end try 
+  catch (err) {
+    sheet.getRange(2, 11).setValue("error line 35: " + JSON.stringify(err));
+  }
+
+return HtmlService.createHtmlOutput("Hey! Webhook request received: " + JSON.stringify(e));
+}
