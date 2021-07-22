@@ -8,14 +8,23 @@ function doPost(e) {
   var dataContents = {};
   var type = "";
   var questOwner = "";
+  var questOwnerName = "";
+  var paramsTemplate = {
+     "method" : "get",
+     "headers" : {
+       "x-api-user" : habId, 
+       "x-api-key" : habToken    
+     }
+   }  
+   
   
   sheet.insertRows(2, 1); //shift all rows down by one from row 3
   sheet.getRange(2, 1).setValue(now);
- 
+
   try {
     dataContents = JSON.parse(e.postData.contents); // [object]; get rid of backslashes in e.postData.contents-object  // e.postData.contents has to be parsed!!!
     type = dataContents.type;
- 
+
     sheet.getRange(2, 2).setValue(type);
     try {
       sheet.getRange(2, 6).setValue(JSON.stringify(dataContents));
@@ -23,8 +32,16 @@ function doPost(e) {
     catch (err) {sheet.getRange(2, 10).setValue("error Line 23: " + JSON.stringify(err))};
 
     try {
-        if (dataContents.quest.questOwner) {questOwner = dataContents.quest.questOwner;} else {questOwner = "-";}
+        if (dataContents.quest.questOwner) {
+          questOwner = dataContents.quest.questOwner;
+          try {
+            var response = UrlFetchApp.fetch("https://habitica.com/api/v3/members/" + questOwner, paramsTemplate);
+            var memberProfile = JSON.parse(response);
+            questOwnerName = memberProfile.data.profile.name;
+          } catch (err) {questOwnerName = "error";}
+        } else {questOwner = "-";}
         sheet.getRange(2, 4).setValue(questOwner);
+        sheet.getRange(2, 5).setValue(questOwnerName);
         sheet.getRange(2, 3).setValue(dataContents.quest.key);
     }
     catch (err) {
@@ -35,5 +52,3 @@ function doPost(e) {
     sheet.getRange(2, 11).setValue("error line 35: " + JSON.stringify(err));
   }
 
-return HtmlService.createHtmlOutput("Hey! Webhook request received: " + JSON.stringify(e));
-}
