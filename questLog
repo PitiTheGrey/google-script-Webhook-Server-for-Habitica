@@ -51,4 +51,5 @@ function doPost(e) {
   catch (err) {
     sheet.getRange(2, 11).setValue("error line 35: " + JSON.stringify(err));
   }
-
+return HtmlService.createHtmlOutput("Hey! Webhook request received: " + JSON.stringify(e));
+}
